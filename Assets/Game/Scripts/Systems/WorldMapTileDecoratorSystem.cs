@@ -19,8 +19,8 @@ public class WorldMapTileDecoratorSystem : JobComponentSystem
             {
                 mesh = GameController.instance.mesh,
                 material = GameController.instance.materials[Mathf.Clamp((int)translation.Value.y,0,GameController.instance.materials.Length-1)],
-                castShadows = ShadowCastingMode.On,
-                receiveShadows = true
+                //castShadows = ShadowCastingMode.On,
+                //receiveShadows = true
             });
         }).Run();
         

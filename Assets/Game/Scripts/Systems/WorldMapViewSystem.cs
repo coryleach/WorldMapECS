@@ -26,7 +26,7 @@ public class WorldMapViewSystem : JobComponentSystem
         _bufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
         worldMapViewDataQuery = GetEntityQuery(ComponentType.ReadOnly<WorldMapViewData>());
         worldMapTiles = GetEntityQuery(ComponentType.ReadOnly<WorldMapTileData>());
-        _tileArchetype = EntityManager.CreateArchetype(typeof(LocalToWorld),typeof(Translation),typeof(WorldMapTileData));
+        _tileArchetype = EntityManager.CreateArchetype(typeof(LocalToWorld),typeof(Translation),typeof(WorldMapTileData),typeof(Rotation));
     }
 
     private struct CleanupJob : IJobForEachWithEntity<WorldMapTileData>
