@@ -404,7 +404,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 963194227}
   velocity: {x: 0, y: 0, z: 0}
-  dampen: 0.9
+  dampTime: 2
 --- !u!1 &2113806865
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,6 +447,7 @@ MonoBehaviour:
   _width: 10
   _height: 10
   _camera: {fileID: 963194227}
+  padding: 5
 --- !u!4 &2113806867
 Transform:
   m_ObjectHideFlags: 0

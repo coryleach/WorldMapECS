@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,15 +7,14 @@ public class CameraController : MonoBehaviour
 {
   [SerializeField] private Camera _camera;
 
-  private bool dragging = false;
-  private Plane ground = new Plane(Vector3.up, Vector3.zero);
 
   [SerializeField] private Vector3 velocity;
   
   [SerializeField] private float dampTime = 2f;
-
-  private float time = 0;
   
+  private bool dragging = false;
+  private Plane ground = new Plane(Vector3.up, Vector3.zero);
+  private float time = 0;
   private Vector3 previousPosition;
 
   private void Update()
@@ -23,14 +23,16 @@ public class CameraController : MonoBehaviour
     {
       dragging = true;
       previousPosition = Input.mousePosition;
-      return;
     }
 
     if (Input.GetMouseButtonUp(0))
     {
       dragging = false;
     }
+  }
 
+  private void LateUpdate()
+  {
     if (dragging)
     {
       time = 0;
@@ -57,4 +59,5 @@ public class CameraController : MonoBehaviour
       transform.position += velocity;
     }
   }
+  
 }

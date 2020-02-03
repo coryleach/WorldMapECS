@@ -18,6 +18,7 @@ public class WorldMapViewSystem : JobComponentSystem
     private EntityCommandBufferSystem _bufferSystem;
     private EntityQuery worldMapViewDataQuery;
     private EntityQuery worldMapTiles;
+    private EntityArchetype _tileArchetype;
     
     protected override void OnCreate()
     {
@@ -25,6 +26,7 @@ public class WorldMapViewSystem : JobComponentSystem
         _bufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
         worldMapViewDataQuery = GetEntityQuery(ComponentType.ReadOnly<WorldMapViewData>());
         worldMapTiles = GetEntityQuery(ComponentType.ReadOnly<WorldMapTileData>());
+        _tileArchetype = EntityManager.CreateArchetype(typeof(LocalToWorld),typeof(Translation),typeof(WorldMapTileData));
     }
 
     private struct CleanupJob : IJobForEachWithEntity<WorldMapTileData>
@@ -80,6 +82,8 @@ public class WorldMapViewSystem : JobComponentSystem
         }).Schedule(createJob);
         _bufferSystem.AddJobHandleForProducer(destroyJob);
 
+        var tileArchetype = _tileArchetype;
+        
         //Spawn New Tiles
         var spawnJob = Entities.WithChangeFilter<WorldMapViewData>().ForEach((int nativeThreadIndex, Entity entity, ref WorldMapViewSystemData oldView, in WorldMapViewData view) =>
         {
@@ -110,10 +114,8 @@ public class WorldMapViewSystem : JobComponentSystem
                         continue;
                     }
 
-                    var tile = commandBuffer.CreateEntity(nativeThreadIndex);
-                    commandBuffer.AddComponent(nativeThreadIndex, tile, new LocalToWorld());
-                    commandBuffer.AddComponent(nativeThreadIndex, tile, new Translation{ Value = float3(x+0.5f,0,y+0.5f)});
-                    commandBuffer.AddComponent(nativeThreadIndex, tile, new WorldMapTileData{x = x, y = y});
+                    var tile = commandBuffer.CreateEntity(nativeThreadIndex,tileArchetype);
+                    commandBuffer.SetComponent(nativeThreadIndex, tile, new WorldMapTileData{x = x, y = y});
                 }
             }
             
