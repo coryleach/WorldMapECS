@@ -15,7 +15,7 @@ public struct WorldMapViewSystemData : ISystemStateComponentData
 
 public class WorldMapViewSystem : JobComponentSystem
 {
-    private EndSimulationEntityCommandBufferSystem _bufferSystem;
+    private EntityCommandBufferSystem _bufferSystem;
     private EntityQuery worldMapViewDataQuery;
     private EntityQuery worldMapTiles;
     
@@ -26,8 +26,8 @@ public class WorldMapViewSystem : JobComponentSystem
         worldMapViewDataQuery = GetEntityQuery(ComponentType.ReadOnly<WorldMapViewData>());
         worldMapTiles = GetEntityQuery(ComponentType.ReadOnly<WorldMapTileData>());
     }
-    
-    public struct CleanupJob : IJobForEachWithEntity<WorldMapTileData>
+
+    private struct CleanupJob : IJobForEachWithEntity<WorldMapTileData>
     {
         [DeallocateOnJobCompletion, ReadOnly]
         public NativeArray<WorldMapViewData> mapViews;

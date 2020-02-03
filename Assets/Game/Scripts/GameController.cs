@@ -19,6 +19,8 @@ public class GameController : MonoBehaviour
   
   private Plane ground = new Plane(Vector3.up, Vector3.zero);
 
+  [SerializeField] private int padding = 5;
+  
   private void Awake()
   {
     instance = this;
@@ -51,10 +53,10 @@ public class GameController : MonoBehaviour
     var x = Mathf.FloorToInt(Mathf.Min(worldCorners[0].x, worldCorners[1].x));
     var y = Mathf.FloorToInt(Mathf.Min(worldCorners[0].z, worldCorners[3].z));
 
-    _x = x;
-    _y = y;
-    _width = Mathf.Min(Mathf.Max(widthBottom,widthTop), 1000); //Cap at 100
-    _height = Mathf.Min(Mathf.Max(heightLeft,heightRight), 1000); //Cap at 100
+    _x = x - 5;
+    _y = y - 5;
+    _width = Mathf.Min(Mathf.Max(widthBottom,widthTop) + 5, 1000); //Cap at 100
+    _height = Mathf.Min(Mathf.Max(heightLeft,heightRight) + 5, 1000); //Cap at 100
     
     _entityManager.SetComponentData(worldViewEntity, new WorldMapViewData { x = _x, y = _y, width = _width, height = _height});
   }
