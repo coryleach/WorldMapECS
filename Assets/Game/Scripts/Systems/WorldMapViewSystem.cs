@@ -1,9 +1,9 @@
 ﻿using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
-using Unity.Rendering;
+using Unity.Mathematics;
 using Unity.Transforms;
-using static Unity.Mathematics.math;
+using UnityEngine;
 
 public struct WorldMapViewSystemData : ISystemStateComponentData
 {
@@ -116,6 +116,10 @@ public class WorldMapViewSystem : JobComponentSystem
 
                     var tile = commandBuffer.CreateEntity(nativeThreadIndex,tileArchetype);
                     commandBuffer.SetComponent(nativeThreadIndex, tile, new WorldMapTileData{x = x, y = y});
+                    
+                    var pt = new float2(x * 0.01f, y * 0.01f);
+                    var position = new float3(x,Mathf.Max(0,Mathf.RoundToInt(noise.snoise(pt) * 4f)),y);
+                    commandBuffer.SetComponent(nativeThreadIndex, tile, new Translation(){ Value = position});
                 }
             }
             
