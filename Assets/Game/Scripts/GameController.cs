@@ -1,11 +1,10 @@
-﻿using System;
-using Unity.Entities;
+﻿using Unity.Entities;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 public class GameController : MonoBehaviour
 {
   public Mesh mesh;
-  public Material material;
   public Material[] materials;
 
   public int _x = 0;
@@ -19,8 +18,10 @@ public class GameController : MonoBehaviour
   
   private Plane ground = new Plane(Vector3.up, Vector3.zero);
 
-  [SerializeField] private int horizontalPadding = 5;
-  [SerializeField] private int verticalPadding = 5;
+  [SerializeField] 
+  private int horizontalPadding = 5;
+  [SerializeField] 
+  private int verticalPadding = 5;
   
   private void Awake()
   {

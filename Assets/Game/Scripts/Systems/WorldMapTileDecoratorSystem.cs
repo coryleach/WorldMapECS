@@ -4,7 +4,7 @@ using Unity.Jobs;
 using Unity.Rendering;
 using Unity.Transforms;
 using UnityEngine;
-using UnityEngine.Rendering;
+using UnityEngine.Scripting;
 
 [AlwaysSynchronizeSystem]
 public class WorldMapTileDecoratorSystem : JobComponentSystem

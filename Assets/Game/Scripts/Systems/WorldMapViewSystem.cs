@@ -4,6 +4,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 public struct WorldMapViewSystemData : ISystemStateComponentData
 {
@@ -33,7 +34,6 @@ public class WorldMapViewSystem : JobComponentSystem
     {
         [DeallocateOnJobCompletion, ReadOnly]
         public NativeArray<WorldMapViewData> mapViews;
-
         public EntityCommandBuffer.Concurrent commandBuffer;
         
         public void Execute(Entity entity, int index, [ReadOnly] ref WorldMapTileData tileData)
