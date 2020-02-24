@@ -59,5 +59,42 @@ public class CameraController : MonoBehaviour
       transform.position += velocity;
     }
   }
+
+  [Serializable]
+  public class Momentum3
+  {
+    [SerializeField] 
+    private Vector3 velocity;
+  
+    [SerializeField] 
+    private float dampTime = 2f;
+
+    private float time = 0;
+
+    public Action<Vector3> OnValueChanged = null;
+    
+    public void SetVelocity(Vector3 velocity)
+    {
+      this.velocity = velocity;
+      time = 0;
+    }
+
+    public void Update(float deltaTime)
+    {
+      if ( time > dampTime )
+      {
+        return;
+      }
+      time += deltaTime;
+      velocity = Vector3.Lerp(velocity, Vector3.zero, Mathf.InverseLerp(0,dampTime,time));
+      OnValueChanged?.Invoke(velocity);
+    }
+
+    public void Stop()
+    {
+      time = dampTime;
+      velocity = Vector3.zero;
+    }
+  }
   
 }

@@ -6,6 +6,10 @@ using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.Scripting;
 
+public struct WorldMapTileDirty : IComponentData
+{
+}
+
 [AlwaysSynchronizeSystem]
 public class WorldMapTileDecoratorSystem : JobComponentSystem
 {
@@ -23,7 +27,17 @@ public class WorldMapTileDecoratorSystem : JobComponentSystem
                 //receiveShadows = true
             });
         }).Run();
-        
+
+        Entities.WithoutBurst().WithAll<WorldMapTileDirty>().ForEach((Entity entity, RenderMesh renderMesh, in Translation translation) =>
+        {
+            renderMesh.mesh = GameController.instance.mesh;
+            renderMesh.material =
+                GameController.instance.materials[
+                    Mathf.Clamp((int) translation.Value.y, 0, GameController.instance.materials.Length - 1)];
+            commandBuffer.RemoveComponent<WorldMapTileDirty>(entity);
+            commandBuffer.SetSharedComponent(entity,renderMesh);
+        }).Run();
+
         commandBuffer.Playback(EntityManager);
         commandBuffer.Dispose();
         
